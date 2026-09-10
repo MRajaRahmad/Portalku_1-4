@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# konfigurasi lokal berisi kredensial - JANGAN pernah di-commit
+src/main/resources/application-local.properties
