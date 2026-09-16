@@ -26,4 +26,15 @@ public class jurnal {
 
     @Column(name = "tahun_terbit", nullable = false)
     private Integer tahunTerbit;
+
+    private String issn;
+
+// Tambahkan getter dan setter untuk issn (atau sesuaikan dengan anotasi Lombok jika menggunakan Lombok)
+public String getIssn() {
+    return issn;
+}
+
+public void setIssn(String issn) {
+    this.issn = issn;
+}
 }
