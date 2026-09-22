@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import id.ac.polinema.lumajang.portalku.kurikulum.Kurikulum;
+import id.ac.polinema.lumajang.portalku.pengumuman.Pengumuman;
 
 @Entity
 @Table(name = "program_studi")
@@ -46,4 +47,6 @@ public class Prodi {
         daftarKurikulum.remove(kurikulum);
         kurikulum.setProdi(null);
     }
+      @ManyToMany(mappedBy = "prodis")
+    private List<Pengumuman> pengumumans = new ArrayList<>();
 }
