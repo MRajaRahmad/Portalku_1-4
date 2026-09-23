@@ -1,34 +1,36 @@
-package id.ac.polinema.lumajang.portalku.Jurnal;
+package id.ac.polinema.lumajang.portalku.jurnal;
 
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class jurnalService {
+public class JurnalService {
 
     private final JurnalRepository jurnalRepository;
 
-    public List<jurnal> cariSemua() {
+    public List<Jurnal> cariSemua() {
         return jurnalRepository.findAll();
     }
 
-    public jurnal cariSatu(Integer id) {
+    public Jurnal cariSatu(Integer id) {
         return jurnalRepository.findById(id)
-                .orElseThrow(() -> new jurnalTidakDitemukanException(id));
+                .orElseThrow(() ->
+                        new JurnalTidakDitemukanException(id));
     }
 
-    public jurnal tambah(jurnal jurnal) {
-        jurnal.setId(null);         // id selalu ditentukan oleh penyimpanan
+    public Jurnal tambah(Jurnal jurnal) {
+        jurnal.setId(null);
         return jurnalRepository.save(jurnal);
     }
 
-    // SESUDAH — memakai existsById untuk memeriksa lebih dahulu
-public void hapus(Integer id) {
-    if (!jurnalRepository.existsById(id)) {
-        throw new jurnalTidakDitemukanException(id);
+    public void hapus(Integer id) {
+        if (!jurnalRepository.existsById(id)) {
+            throw new JurnalTidakDitemukanException(id);
+        }
+
+        jurnalRepository.deleteById(id);
     }
-    jurnalRepository.deleteById(id);
-}
 }

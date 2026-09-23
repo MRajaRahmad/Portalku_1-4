@@ -1,8 +1,8 @@
-package id.ac.polinema.lumajang.portalku.Jurnal;
+package id.ac.polinema.lumajang.portalku.jurnal;
 
-public class jurnalTidakDitemukanException extends RuntimeException {
+public class JurnalTidakDitemukanException extends RuntimeException {
 
-    public jurnalTidakDitemukanException(Integer id) {
+    public JurnalTidakDitemukanException(Integer id) {
         super("Jurnal dengan id " + id + " tidak ditemukan");
     }
 }

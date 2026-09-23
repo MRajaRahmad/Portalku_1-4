@@ -1,12 +1,11 @@
 package id.ac.polinema.lumajang.portalku.pengumuman.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public record PengumumanRingkasResponse(
-        Integer id,
+        Long id,
         String judul,
         String namaKategori,
-        LocalDate tanggalTerbit,
+        LocalDateTime tanggalTerbit,
         Integer jumlahDilihat
-) {
-}
+) {}

@@ -1,4 +1,4 @@
-package id.ac.polinema.lumajang.portalku.Jurnal;
+package id.ac.polinema.lumajang.portalku.jurnal;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class jurnal {
+public class Jurnal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,13 +28,4 @@ public class jurnal {
     private Integer tahunTerbit;
 
     private String issn;
-
-// Tambahkan getter dan setter untuk issn (atau sesuaikan dengan anotasi Lombok jika menggunakan Lombok)
-public String getIssn() {
-    return issn;
-}
-
-public void setIssn(String issn) {
-    this.issn = issn;
-}
 }

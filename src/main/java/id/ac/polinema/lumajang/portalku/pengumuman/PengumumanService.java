@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import id.ac.polinema.lumajang.portalku.kategori.Kategori;
-import id.ac.polinema.lumajang.portalku.kategori.KategoriRepository;
 import id.ac.polinema.lumajang.portalku.pengumuman.dto.PengumumanRequest;
 import id.ac.polinema.lumajang.portalku.pengumuman.dto.PengumumanResponse;
 import id.ac.polinema.lumajang.portalku.pengumuman.dto.PengumumanRingkasResponse;
+import id.ac.polinema.lumajang.portalku.shared.KategoriTidakDitemukanException;
+import id.ac.polinema.lumajang.portalku.shared.PengumumanTidakDitemukanException;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,18 +36,16 @@ public class PengumumanService {
                 .toList();
     }
 
-    public PengumumanResponse cariSatu(Integer id) {
+    public PengumumanResponse cariSatu(Long id) {
         return mapper.keResponse(ambilAtauGagal(id));
     }
 
     @Transactional
     public PengumumanResponse tambah(PengumumanRequest req) {
 
-        Kategori kategori = kategoriRepository
-                .findById(req.idKategori())
+        Kategori kategori = kategoriRepository.findById(req.idKategori())
                 .orElseThrow(() ->
-                        new KategoriTidakDitemukanException(
-                                req.idKategori()));
+                        new KategoriTidakDitemukanException(req.idKategori()));
 
         Pengumuman baru = mapper.keEntity(req, kategori);
 
@@ -58,16 +56,14 @@ public class PengumumanService {
 
     @Transactional
     public PengumumanResponse ubah(
-            Integer id,
+            Long id,
             PengumumanRequest req) {
 
         Pengumuman p = ambilAtauGagal(id);
 
-        Kategori kategori = kategoriRepository
-                .findById(req.idKategori())
+        Kategori kategori = kategoriRepository.findById(req.idKategori())
                 .orElseThrow(() ->
-                        new KategoriTidakDitemukanException(
-                                req.idKategori()));
+                        new KategoriTidakDitemukanException(req.idKategori()));
 
         mapper.terapkan(req, p, kategori);
 
@@ -75,13 +71,13 @@ public class PengumumanService {
     }
 
     @Transactional
-    public void hapus(Integer id) {
+    public void hapus(Long id) {
         pengumumanRepository.delete(
                 ambilAtauGagal(id)
         );
     }
 
-    private Pengumuman ambilAtauGagal(Integer id) {
+    private Pengumuman ambilAtauGagal(Long id) {
         return pengumumanRepository.findById(id)
                 .orElseThrow(() ->
                         new PengumumanTidakDitemukanException(id));

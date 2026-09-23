@@ -32,7 +32,7 @@ public class PengumumanController {
 
     @GetMapping("/{id}")
     public PengumumanResponse satu(
-            @PathVariable Integer id) {
+            @PathVariable Long id) {
 
         return pengumumanService.cariSatu(id);
     }
@@ -58,7 +58,7 @@ public class PengumumanController {
 
     @PutMapping("/{id}")
     public PengumumanResponse ubah(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Valid @RequestBody PengumumanRequest req) {
 
         return pengumumanService.ubah(id, req);
@@ -66,7 +66,7 @@ public class PengumumanController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void hapus(@PathVariable Integer id) {
+    public void hapus(@PathVariable Long id) {
         pengumumanService.hapus(id);
     }
 }
