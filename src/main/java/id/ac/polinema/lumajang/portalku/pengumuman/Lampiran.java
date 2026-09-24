@@ -1,35 +1,28 @@
 package id.ac.polinema.lumajang.portalku.pengumuman;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "lampiran")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Lampiran {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nama_berkas", nullable = false)
+    @Column(name = "nama_berkas", nullable = false, length = 255)
     private String namaBerkas;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String ukuran;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pengumuman_id", nullable = false)
     private Pengumuman pengumuman;
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getNamaBerkas() { return namaBerkas; }
-    public void setNamaBerkas(String namaBerkas) { this.namaBerkas = namaBerkas; }
-
-    public String getUkuran() { return ukuran; }
-    public void setUkuran(String ukuran) { this.ukuran = ukuran; }
-
-    public Pengumuman getPengumuman() { return pengumuman; }
-    public void setPengumuman(Pengumuman penguman) { this.pengumuman = penguman; }
 }

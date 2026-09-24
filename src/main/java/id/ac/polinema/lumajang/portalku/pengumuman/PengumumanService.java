@@ -78,8 +78,23 @@ public class PengumumanService {
     }
 
     private Pengumuman ambilAtauGagal(Long id) {
-        return pengumumanRepository.findById(id)
-                .orElseThrow(() ->
-                        new PengumumanTidakDitemukanException(id));
-    }
+    return pengumumanRepository.findById(id)
+            .orElseThrow(() ->
+                    new PengumumanTidakDitemukanException(id));
+}
+
+@Transactional
+public PengumumanResponse tambahDilihat(Long id) {
+
+    Pengumuman pengumuman =
+            pengumumanRepository.findById(id)
+                    .orElseThrow(() ->
+                            new PengumumanTidakDitemukanException(id));
+
+    pengumuman.setJumlahDilihat(
+            pengumuman.getJumlahDilihat() + 1
+    );
+
+    return mapper.keResponse(pengumuman);
+}
 }

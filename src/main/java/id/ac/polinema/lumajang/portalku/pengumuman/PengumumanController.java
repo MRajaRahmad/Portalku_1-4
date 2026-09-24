@@ -109,4 +109,28 @@ public class PengumumanController {
     public void hapus(@PathVariable Long id) {
         pengumumanService.hapus(id);
     }
+
+    @Operation(
+    summary = "Menambah jumlah dilihat pengumuman",
+    description = "Menaikkan jumlah dilihat sebanyak satu. "
+            + "Menggunakan PATCH karena operasi ini mengubah keadaan data."
+)
+@ApiResponse(
+    responseCode = "200",
+    description = "Jumlah dilihat berhasil ditambah"
+)
+@ApiResponse(
+    responseCode = "404",
+    description = "Pengumuman tidak ditemukan"
+)
+// PATCH digunakan karena endpoint ini mengubah jumlahDilihat.
+// Tidak menggunakan GET karena GET harus aman/tidak mengubah state.
+// Jika GET digunakan, crawler atau browser prefetch dapat menyebabkan
+// jumlahDilihat bertambah tanpa pengguna benar-benar melihat pengumuman.
+@PatchMapping("/{id}/dilihat")
+public PengumumanResponse tambahDilihat(
+        @PathVariable Long id) {
+
+    return pengumumanService.tambahDilihat(id);
+}
 }
