@@ -1,3 +1,4 @@
+
 package id.ac.polinema.lumajang.portalku.pengumuman;
 
 import java.net.URI;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,7 +24,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.http.ProblemDetail;
 
 @RestController
 @RequestMapping("/api/pengumuman")
@@ -54,9 +56,7 @@ public class PengumumanController {
         return pengumumanService.cariSatu(id);
     }
 
-    @Operation(
-        summary = "Menambah pengumuman baru"
-    )
+    @Operation(summary = "Menambah pengumuman baru")
     @ApiResponses({
         @ApiResponse(
             responseCode = "201",
@@ -66,18 +66,23 @@ public class PengumumanController {
             responseCode = "422",
             description = "Data tidak lolos validasi",
             content = @Content(
-                schema = @Schema(implementation = ProblemDetail.class)
+                schema = @Schema(
+                    implementation = ProblemDetail.class
+                )
             )
         ),
         @ApiResponse(
             responseCode = "409",
             description = "Judul sudah dipakai",
             content = @Content(
-                schema = @Schema(implementation = ProblemDetail.class)
+                schema = @Schema(
+                    implementation = ProblemDetail.class
+                )
             )
         )
     })
     @PostMapping
+    @PreAuthorize("hasAnyRole('EDITOR', 'ADMIN')")
     public ResponseEntity<PengumumanResponse> tambah(
             @Valid @RequestBody PengumumanRequest req) {
 
@@ -97,6 +102,7 @@ public class PengumumanController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('EDITOR', 'ADMIN')")
     public PengumumanResponse ubah(
             @PathVariable Long id,
             @Valid @RequestBody PengumumanRequest req) {
@@ -105,32 +111,29 @@ public class PengumumanController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void hapus(@PathVariable Long id) {
         pengumumanService.hapus(id);
     }
 
     @Operation(
-    summary = "Menambah jumlah dilihat pengumuman",
-    description = "Menaikkan jumlah dilihat sebanyak satu. "
-            + "Menggunakan PATCH karena operasi ini mengubah keadaan data."
-)
-@ApiResponse(
-    responseCode = "200",
-    description = "Jumlah dilihat berhasil ditambah"
-)
-@ApiResponse(
-    responseCode = "404",
-    description = "Pengumuman tidak ditemukan"
-)
-// PATCH digunakan karena endpoint ini mengubah jumlahDilihat.
-// Tidak menggunakan GET karena GET harus aman/tidak mengubah state.
-// Jika GET digunakan, crawler atau browser prefetch dapat menyebabkan
-// jumlahDilihat bertambah tanpa pengguna benar-benar melihat pengumuman.
-@PatchMapping("/{id}/dilihat")
-public PengumumanResponse tambahDilihat(
-        @PathVariable Long id) {
+        summary = "Menambah jumlah dilihat pengumuman",
+        description = "Menaikkan jumlah dilihat sebanyak satu. "
+                + "Menggunakan PATCH karena operasi ini mengubah keadaan data."
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Jumlah dilihat berhasil ditambah"
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "Pengumuman tidak ditemukan"
+    )
+    @PatchMapping("/{id}/dilihat")
+    public PengumumanResponse tambahDilihat(
+            @PathVariable Long id) {
 
-    return pengumumanService.tambahDilihat(id);
-}
+        return pengumumanService.tambahDilihat(id);
+    }
 }
